@@ -114,6 +114,11 @@ Install with your favorite manager. With [lazy.nvim](https://github.com/folke/la
       desc = "Detach a CLI Session",
     },
     {
+      "<leader>ar",
+      function() require("sidekick.cli").select({ resume = true }) end,
+      desc = "Continue Last CLI Session",
+    },
+    {
       "<leader>at",
       function() require("sidekick.cli").send({ msg = "{this}" }) end,
       mode = { "x", "n" },
@@ -327,6 +332,7 @@ local defaults = {
       split = {
         vertical = true, -- vertical or horizontal split
         size = 0.5, -- size of the split (0-1 for percentage)
+        close_on_exit = true, -- close the split when Neovim exits
       },
     },
     --- Actual cli tool config is loaded from the runtime path `sk/cli/{tool}.lua` and merged with the config below.
@@ -623,7 +629,7 @@ current file, selection, diagnostics, and more.
 - `{quickfix}`: The current quickfix list, including title and formatted items.
 - `{function}`: The function at cursor (Tree-sitter) - returns location like `function foo @file:10:5`.
 - `{class}`: The class/struct at cursor (Tree-sitter) - returns location.
-- `{this}`: A special context variable. If the current buffer is a file, it resolves to `{position}`. Otherwise, it resolves to the literal string "this" and appends the current `{selection}` to the prompt.
+- `{this}`: A special context variable. If the current buffer is a file, it resolves to `{line}`. Otherwise, it resolves to the literal string "this" and appends the current `{selection}` to the prompt.
 
 </details>
 

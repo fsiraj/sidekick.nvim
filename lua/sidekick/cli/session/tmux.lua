@@ -48,7 +48,23 @@ function M:start()
     vim.list_extend(cmd, { "-l", tostring(size <= 1 and ((size * 100) .. "%") or size) })
     self:add_cmd(cmd)
     self:spawn(cmd)
+    if Config.cli.mux.split.close_on_exit then
+      local pane_id = self.tmux_pane_id
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        once = true,
+        callback = function()
+          pcall(Util.exec, { "tmux", "kill-pane", "-t", pane_id }, { notify = false })
+        end,
+      })
+    end
     Util.info(("Started **%s** in a new tmux split"):format(self.tool.name))
+  end
+end
+
+--- Kill the tmux pane (used when detaching).
+function M:close()
+  if self.tmux_pane_id then
+    Util.exec({ "tmux", "kill-pane", "-t", self.tmux_pane_id }, { notify = false })
   end
 end
 

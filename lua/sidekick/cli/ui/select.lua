@@ -4,6 +4,8 @@ local Util = require("sidekick.util")
 ---@class sidekick.cli.Select: sidekick.cli.With
 ---@field cb fun(state?:sidekick.cli.State)
 ---@field auto? boolean Automatically select if only one tool matches the filter
+---@field continue? boolean Launch the selected tool with its `continue` args (resume the last session)
+---@field resume? boolean Launch the selected tool with its `resume` args (pick a previous session)
 
 local M = {}
 

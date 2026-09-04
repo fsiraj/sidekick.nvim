@@ -52,6 +52,9 @@ function B:attach() end
 --- Detach from an existing session
 function B:detach() end
 
+--- Stop the session and remove its pane/window (optional hook)
+function B:close() end
+
 --- Start a new session
 --- If the backend returns a Cmd, a new terminal session will be spawned
 ---@return sidekick.cli.terminal.Cmd?

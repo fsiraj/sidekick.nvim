@@ -94,6 +94,7 @@ local defaults = {
       split = {
         vertical = true, -- vertical or horizontal split
         size = 0.5, -- size of the split (0-1 for percentage)
+        close_on_exit = true, -- close the split when Neovim exits
       },
       -- max lines to capture when dumping a multiplexer pane for scrollback support
       -- more lines means slower loading of the scrollback

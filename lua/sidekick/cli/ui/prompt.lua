@@ -78,7 +78,8 @@ function M.select(opts)
     kind = "sidekick_prompt",
     ---@param item sidekick.select_prompt.Item
     format_item = function(item)
-      return ("[%s] %s"):format(item.name, string.rep(" ", 18 - #item.name) .. item.prompt.msg)
+      local msg = item.prompt.msg:gsub("\n", "\\n")
+      return ("[%s] %s"):format(item.name, string.rep(" ", 18 - #item.name) .. msg)
     end,
     snacks = {
       format = function(item)

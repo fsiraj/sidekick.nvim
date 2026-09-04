@@ -21,6 +21,8 @@ local M = {}
 ---@field mux_focus? boolean wether the tool needs to be focused in order to receive input
 ---@field format? fun(text:sidekick.Text[], str:string):string?
 ---@field native_scroll? boolean whether the tool handles scrolling natively
+---@field resume? string[] Extra args appended to `cmd` to resume/pick a previous session
+---@field continue? string[] Extra args appended to `cmd` to continue the last session
 
 ---@class sidekick.cli.Show
 ---@field name? string
@@ -68,7 +70,7 @@ function M.prompt(opts)
 end
 
 --- Start or attach to a CLI tool
----@param opts? sidekick.cli.Select|{cb:nil}|{focus?:boolean}
+---@param opts? sidekick.cli.Select|{cb:nil}
 ---@overload fun(cb:fun(state?:sidekick.cli.State))
 function M.select(opts)
   opts = opts or {}
@@ -76,6 +78,12 @@ function M.select(opts)
   opts.cb = opts.cb
     or function(state)
       if state then
+        local extra = not state.started
+          and ((opts.continue and state.tool.continue) or (opts.resume and state.tool.resume))
+        if extra then
+          state.tool = state.tool:clone()
+          state.tool.cmd = vim.list_extend(vim.deepcopy(state.tool.cmd), extra)
+        end
         State.attach(state, { show = true, focus = opts.focus })
       end
     end

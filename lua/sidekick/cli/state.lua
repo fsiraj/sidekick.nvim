@@ -182,7 +182,7 @@ function M.attach(state, opts)
   local tool = state.tool
 
   -- if the session is already attached, the below is a no-op
-  local session = state.session or Session.new({ tool = tool.name })
+  local session = state.session or Session.new({ tool = tool })
   session = Session.attach(session)
 
   state = M.get_state(session) -- update state
@@ -206,6 +206,7 @@ function M.detach(state)
     if state.terminal then
       state.terminal:close()
     else
+      state.session:close()
       Session.detach(state.session)
       Util.info("Detached from `" .. state.tool.name .. "`")
     end

@@ -160,10 +160,10 @@ function C:render(opts)
 
   if opts.this ~= false then
     -- {this} is special:
-    -- * when ctx is an actual file, then {position} is used
+    -- * when ctx is an actual file, then {line} is used
     -- * otherwise it's replaced with `this` and a `{selection}` is appended
     -- * when in that case the user is not in visual mode, the message will be discarded
-    local this, did_this, c = Loc.is_file(self.ctx.buf) and "{position}" or "this", false, 0
+    local this, did_this, c = Loc.is_file(self.ctx.buf) and "{line}" or "this", false, 0
     for l in ipairs(lines) do
       lines[l], c = lines[l]:gsub("{this}", this)
       if c > 0 and this == "this" and not did_this then
