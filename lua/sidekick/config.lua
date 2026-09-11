@@ -216,6 +216,20 @@ function M.setup(opts)
       end,
     })
 
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+      group = M.augroup,
+      callback = function()
+        if vim.v.exitreason == "restart" or not M.cli.mux.split.close_on_exit then
+          return
+        end
+        for _, session in pairs(require("sidekick.cli.session").attached()) do
+          if session.backend == "tmux" then
+            session:close()
+          end
+        end
+      end,
+    })
+
     if M.nes.enabled ~= false then
       require("sidekick.nes").enable()
     end
